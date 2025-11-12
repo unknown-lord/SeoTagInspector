@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import URLInput from "@/components/URLInput";
 import StatusCard, { type StatusType } from "@/components/StatusCard";
 import GooglePreview from "@/components/GooglePreview";
@@ -7,53 +8,46 @@ import OverallScore from "@/components/OverallScore";
 import RecommendationsPanel, { type Recommendation } from "@/components/RecommendationsPanel";
 import TechnicalDetails from "@/components/TechnicalDetails";
 import EmptyState from "@/components/EmptyState";
-
-// TODO: remove mock functionality
-interface SEOData {
-  title: string | null;
-  description: string | null;
-  canonical: string | null;
-  ogTitle: string | null;
-  ogDescription: string | null;
-  ogImage: string | null;
-  twitterCard: string | null;
-  twitterTitle: string | null;
-  twitterDescription: string | null;
-  twitterImage: string | null;
-  robots: string | null;
-  viewport: string | null;
-}
-
-// TODO: remove mock functionality
-const mockSEOData: SEOData = {
-  title: "Best SEO Practices for Modern Websites | SEO Guide 2025",
-  description: "Learn comprehensive SEO strategies including meta tags, structured data, and optimization techniques to improve your website's search engine rankings and drive organic traffic.",
-  canonical: "https://example.com/seo-guide",
-  ogTitle: "Best SEO Practices for Modern Websites",
-  ogDescription: "Learn comprehensive SEO strategies including meta tags, structured data, and optimization techniques.",
-  ogImage: null,
-  twitterCard: "summary_large_image",
-  twitterTitle: "Best SEO Practices for Modern Websites",
-  twitterDescription: "Learn comprehensive SEO strategies including meta tags, structured data, and optimization techniques.",
-  twitterImage: null,
-  robots: "index, follow",
-  viewport: "width=device-width, initial-scale=1",
-};
+import { useToast } from "@/hooks/use-toast";
+import type { SEOData } from "@shared/schema";
 
 export default function Home() {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analyzedUrl, setAnalyzedUrl] = useState<string | null>(null);
   const [seoData, setSeoData] = useState<SEOData | null>(null);
+  const { toast } = useToast();
+
+  const analyzeMutation = useMutation({
+    mutationFn: async (url: string) => {
+      const response = await fetch("/api/analyze-seo", {
+        method: "POST",
+        body: JSON.stringify({ url }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to analyze website");
+      }
+
+      return await response.json() as SEOData;
+    },
+    onSuccess: (data, url) => {
+      setSeoData(data);
+      setAnalyzedUrl(url);
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Analysis Failed",
+        description: error.message || "Failed to analyze the website. Please check the URL and try again.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleAnalyze = (url: string) => {
-    setIsAnalyzing(true);
-    setAnalyzedUrl(url);
-    
-    // TODO: remove mock functionality - replace with actual API call
-    setTimeout(() => {
-      setSeoData(mockSEOData);
-      setIsAnalyzing(false);
-    }, 1500);
+    analyzeMutation.mutate(url);
   };
 
   // Calculate status and recommendations
@@ -225,10 +219,10 @@ export default function Home() {
 
       <main className="max-w-7xl mx-auto px-4 py-8 md:px-8">
         <div className="mb-12">
-          <URLInput onAnalyze={handleAnalyze} isLoading={isAnalyzing} />
+          <URLInput onAnalyze={handleAnalyze} isLoading={analyzeMutation.isPending} />
         </div>
 
-        {!seoData && !isAnalyzing && <EmptyState />}
+        {!seoData && !analyzeMutation.isPending && <EmptyState />}
 
         {seoData && (
           <div className="space-y-12">
