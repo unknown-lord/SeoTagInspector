@@ -1,18 +1,23 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const analyzeSEORequestSchema = z.object({
+  url: z.string().url("Please provide a valid URL"),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const seoDataSchema = z.object({
+  title: z.string().nullable(),
+  description: z.string().nullable(),
+  canonical: z.string().nullable(),
+  ogTitle: z.string().nullable(),
+  ogDescription: z.string().nullable(),
+  ogImage: z.string().nullable(),
+  twitterCard: z.string().nullable(),
+  twitterTitle: z.string().nullable(),
+  twitterDescription: z.string().nullable(),
+  twitterImage: z.string().nullable(),
+  robots: z.string().nullable(),
+  viewport: z.string().nullable(),
 });
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+export type AnalyzeSEORequest = z.infer<typeof analyzeSEORequestSchema>;
+export type SEOData = z.infer<typeof seoDataSchema>;
