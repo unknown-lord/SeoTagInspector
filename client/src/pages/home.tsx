@@ -207,25 +207,25 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
-        <div className="max-w-7xl mx-auto px-4 py-6 md:px-8">
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-semibold tracking-tight">SEO Meta Tag Analyzer</h1>
-            <p className="text-muted-foreground">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:py-6 md:px-8">
+          <div className="text-center space-y-1 sm:space-y-2">
+            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">SEO Meta Tag Analyzer</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
               Analyze and optimize your website's SEO tags
             </p>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8 md:px-8">
-        <div className="mb-12">
+      <main className="max-w-7xl mx-auto px-4 py-6 sm:py-8 md:px-8">
+        <div className="mb-8 sm:mb-12">
           <URLInput onAnalyze={handleAnalyze} isLoading={analyzeMutation.isPending} />
         </div>
 
         {!seoData && !analyzeMutation.isPending && <EmptyState />}
 
         {seoData && (
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             <div className="max-w-2xl mx-auto">
               <OverallScore 
                 score={goodCount} 
@@ -236,8 +236,8 @@ export default function Home() {
             </div>
 
             <div>
-              <h2 className="text-2xl font-semibold mb-6">Meta Tags Status</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Meta Tags Status</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <StatusCard
                   title="Title Tag"
                   value={seoData.title}
@@ -294,8 +294,8 @@ export default function Home() {
             </div>
 
             <div>
-              <h2 className="text-2xl font-semibold mb-6">Search & Social Previews</h2>
-              <div className="space-y-6">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Search & Social Previews</h2>
+              <div className="space-y-4 sm:space-y-6">
                 <GooglePreview
                   title={seoData.title || "Untitled"}
                   description={seoData.description || "No description"}

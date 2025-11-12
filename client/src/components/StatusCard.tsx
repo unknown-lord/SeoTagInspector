@@ -47,28 +47,29 @@ export default function StatusCard({
 
   return (
     <Card className="hover-elevate" data-testid={`card-status-${title.toLowerCase().replace(/\s+/g, '-')}`}>
-      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0 pb-3">
-        <div className="flex-1">
-          <h3 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+      <CardHeader className="flex flex-row items-start justify-between gap-3 sm:gap-4 space-y-0 pb-3">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xs sm:text-sm font-medium uppercase tracking-wide text-muted-foreground">
             {title}
           </h3>
         </div>
-        <Badge className={config.className} data-testid={`badge-status-${status}`}>
+        <Badge className={`${config.className} flex-shrink-0 text-xs`} data-testid={`badge-status-${status}`}>
           <Icon className="h-3 w-3 mr-1" />
-          {config.label}
+          <span className="hidden sm:inline">{config.label}</span>
+          <span className="sm:hidden">{config.label.split(' ')[0]}</span>
         </Badge>
       </CardHeader>
       <CardContent className="space-y-3">
         {value ? (
           <div className="space-y-2">
-            <p className="text-base break-words" data-testid="text-tag-value">
+            <p className="text-sm sm:text-base break-words" data-testid="text-tag-value">
               {value}
             </p>
             {charCount !== undefined && maxChars && (
-              <p className="text-sm text-muted-foreground" data-testid="text-char-count">
+              <p className="text-xs sm:text-sm text-muted-foreground" data-testid="text-char-count">
                 {charCount} / {maxChars} characters
                 {charCount > maxChars && (
-                  <span className="text-yellow-600 dark:text-yellow-500 ml-2">
+                  <span className="text-yellow-600 dark:text-yellow-500 ml-2 block sm:inline">
                     (exceeds recommended length)
                   </span>
                 )}
@@ -76,12 +77,12 @@ export default function StatusCard({
             )}
           </div>
         ) : (
-          <p className="text-base text-muted-foreground italic" data-testid="text-not-found">
+          <p className="text-sm sm:text-base text-muted-foreground italic" data-testid="text-not-found">
             Not found
           </p>
         )}
         {recommendation && (
-          <p className="text-sm text-muted-foreground border-l-2 border-muted pl-3">
+          <p className="text-xs sm:text-sm text-muted-foreground border-l-2 border-muted pl-3">
             {recommendation}
           </p>
         )}

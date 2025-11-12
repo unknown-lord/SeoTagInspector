@@ -38,11 +38,11 @@ export default function OverallScore({ score, total, warnings, missing }: Overal
 
   return (
     <Card className="border-2" data-testid="card-overall-score">
-      <CardContent className="pt-8 pb-6">
-        <div className="text-center space-y-6">
+      <CardContent className="pt-6 sm:pt-8 pb-6">
+        <div className="text-center space-y-4 sm:space-y-6">
           <div className="flex justify-center">
             <div className="relative">
-              <svg className="transform -rotate-90" width="180" height="180">
+              <svg className="transform -rotate-90 w-[140px] h-[140px] sm:w-[180px] sm:h-[180px]" viewBox="0 0 180 180">
                 <circle
                   cx="90"
                   cy="90"
@@ -66,10 +66,10 @@ export default function OverallScore({ score, total, warnings, missing }: Overal
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className={`text-5xl font-bold ${gradeColor}`} data-testid="text-grade">
+                <div className={`text-4xl sm:text-5xl font-bold ${gradeColor}`} data-testid="text-grade">
                   {grade}
                 </div>
-                <div className="text-lg text-muted-foreground mt-1">
+                <div className="text-base sm:text-lg text-muted-foreground mt-1">
                   {percentage}%
                 </div>
               </div>
@@ -77,28 +77,28 @@ export default function OverallScore({ score, total, warnings, missing }: Overal
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold mb-1">SEO Score</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-1">SEO Score</h3>
             <p className="text-sm text-muted-foreground">
               {score} out of {total} tags optimized
             </p>
           </div>
           
-          <div className="flex justify-center gap-8 pt-4 border-t">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 pt-4 border-t">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-500" />
-              <span className="text-sm">
+              <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 dark:text-green-500" />
+              <span className="text-xs sm:text-sm">
                 <span className="font-semibold">{score - warnings - missing}</span> Good
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-500" />
-              <span className="text-sm">
+              <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600 dark:text-yellow-500" />
+              <span className="text-xs sm:text-sm">
                 <span className="font-semibold">{warnings}</span> Warnings
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <XCircle className="h-5 w-5 text-red-600 dark:text-red-500" />
-              <span className="text-sm">
+              <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-600 dark:text-red-500" />
+              <span className="text-xs sm:text-sm">
                 <span className="font-semibold">{missing}</span> Missing
               </span>
             </div>

@@ -41,7 +41,7 @@ export default function RecommendationsPanel({ recommendations }: Recommendation
   return (
     <Card data-testid="card-recommendations">
       <CardHeader>
-        <CardTitle className="text-xl">Recommendations</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">Recommendations</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
@@ -52,18 +52,18 @@ export default function RecommendationsPanel({ recommendations }: Recommendation
             return (
               <div
                 key={index}
-                className={`border-l-4 ${config.borderColor} pl-4 py-2`}
+                className={`border-l-4 ${config.borderColor} pl-3 sm:pl-4 py-2`}
                 data-testid={`recommendation-${rec.type}-${index}`}
               >
-                <div className="flex gap-3">
-                  <Icon className={`h-5 w-5 ${config.iconColor} flex-shrink-0 mt-0.5`} />
-                  <p className="text-sm">{rec.message}</p>
+                <div className="flex gap-2 sm:gap-3">
+                  <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${config.iconColor} flex-shrink-0 mt-0.5`} />
+                  <p className="text-xs sm:text-sm">{rec.message}</p>
                 </div>
               </div>
             );
           })}
           {sortedRecommendations.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">
+            <p className="text-xs sm:text-sm text-muted-foreground text-center py-4">
               No recommendations at this time. Great job!
             </p>
           )}
