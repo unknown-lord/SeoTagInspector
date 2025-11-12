@@ -13,34 +13,77 @@ export default function OverallScore({ score, total, warnings, missing }: Overal
   
   let grade: string;
   let gradeColor: string;
+  let strokeColor: string;
+  
   if (percentage >= 90) {
     grade = "A";
     gradeColor = "text-green-600 dark:text-green-500";
+    strokeColor = "#10b981";
   } else if (percentage >= 75) {
     grade = "B";
     gradeColor = "text-blue-600 dark:text-blue-500";
+    strokeColor = "#3b82f6";
   } else if (percentage >= 60) {
     grade = "C";
     gradeColor = "text-yellow-600 dark:text-yellow-500";
+    strokeColor = "#f59e0b";
   } else {
     grade = "D";
     gradeColor = "text-red-600 dark:text-red-500";
+    strokeColor = "#ef4444";
   }
+
+  const circumference = 2 * Math.PI * 70;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
     <Card className="border-2" data-testid="card-overall-score">
-      <CardContent className="pt-6">
-        <div className="text-center space-y-4">
-          <div>
-            <div className={`text-6xl font-bold ${gradeColor}`} data-testid="text-grade">
-              {grade}
-            </div>
-            <div className="text-2xl text-muted-foreground mt-2">
-              {percentage}% SEO Score
+      <CardContent className="pt-8 pb-6">
+        <div className="text-center space-y-6">
+          <div className="flex justify-center">
+            <div className="relative">
+              <svg className="transform -rotate-90" width="180" height="180">
+                <circle
+                  cx="90"
+                  cy="90"
+                  r="70"
+                  stroke="currentColor"
+                  strokeWidth="12"
+                  fill="none"
+                  className="text-muted/30"
+                />
+                <circle
+                  cx="90"
+                  cy="90"
+                  r="70"
+                  stroke={strokeColor}
+                  strokeWidth="12"
+                  fill="none"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                  className="transition-all duration-1000 ease-out"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className={`text-5xl font-bold ${gradeColor}`} data-testid="text-grade">
+                  {grade}
+                </div>
+                <div className="text-lg text-muted-foreground mt-1">
+                  {percentage}%
+                </div>
+              </div>
             </div>
           </div>
           
-          <div className="flex justify-center gap-6 pt-4 border-t">
+          <div>
+            <h3 className="text-xl font-semibold mb-1">SEO Score</h3>
+            <p className="text-sm text-muted-foreground">
+              {score} out of {total} tags optimized
+            </p>
+          </div>
+          
+          <div className="flex justify-center gap-8 pt-4 border-t">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-500" />
               <span className="text-sm">
